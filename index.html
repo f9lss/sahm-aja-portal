@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مؤسسة سهم أجا | لتنظيم وتجهيز الفعاليات والمهرجانات</title>
+  <!-- Tailwind CSS & Google Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+    :root {
+      --primary-color: #006C35;
+      --secondary-color: #164E37;
+      --accent-color: #D4AF37;
+    }
+    .bg-primary { background-color: var(--primary-color); }
+    .bg-secondary { background-color: var(--secondary-color); }
+    .text-primary { color: var(--primary-color); }
+    .text-accent { color: var(--accent-color); }
+    .border-accent { border-color: var(--accent-color); }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased selection:bg-green-700 selection:text-white">
+
+  <!-- شريط التنقل (Navbar) -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div id="logo-container" class="h-12 w-12 rounded-xl flex items-center justify-center font-black text-xl text-white bg-primary shadow-md">
+          أجا
+        </div>
+        <div>
+          <h1 id="brand-name" class="font-extrabold text-lg sm:text-xl text-gray-900 leading-tight">سهم أجا</h1>
+          <p class="text-xs text-gray-500 font-semibold">لتنظيم وتجهيز الفعاليات</p>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center gap-8 font-bold text-sm text-gray-700">
+        <a href="#about" class="hover:text-primary transition">عن المؤسسة</a>
+        <a href="#services" class="hover:text-primary transition">التجهيزات الفنية</a>
+        <a href="#projects" class="hover:text-primary transition">سابقة الأعمال</a>
+        <a href="#quote" class="hover:text-primary transition">طلب تسعير</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a id="whatsapp-btn" href="#" target="_blank" class="px-5 py-2.5 rounded-lg text-white font-bold text-sm bg-primary shadow hover:opacity-90 transition">
+          تواصل مباشر
+        </a>
+        <a href="admin.html" class="p-2.5 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition" title="لوحة التحكم">
+          ⚙️
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- الواجهة الترحيبية (Hero) -->
+  <section class="relative py-24 sm:py-32 bg-secondary text-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <span class="inline-block px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold tracking-wide uppercase bg-white/10 text-accent mb-6 border border-white/10">
+        تجهيز احتفالات اليوم الوطني والفعاليات الكبرى
+      </span>
+      <h2 id="hero-title" class="text-3xl sm:text-5xl lg:text-6xl font-black max-w-4xl mx-auto leading-tight mb-6">
+        نصنع من احتفالاتكم مشهداً وطنياً خالداً
+      </h2>
+      <p id="hero-subtitle" class="text-base sm:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed">
+        تجهيز متكامل للمسارح، أحدث تقنيات الصوت والإضاءة، والشاشات العملاقة لكافة مهرجانات وفعاليات المملكة.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#quote" class="px-8 py-3.5 rounded-xl font-extrabold text-sm sm:text-base text-gray-950 bg-accent hover:opacity-95 shadow-lg transition">
+          احجز تجهيزات فعاليتك
+        </a>
+        <a href="#projects" class="px-8 py-3.5 rounded-xl font-bold text-sm sm:text-base text-white bg-white/10 hover:bg-white/20 border border-white/20 transition">
+          مشاهدة سابقة الأعمال
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- التجهيزات والخدمات (Services) -->
+  <section id="services" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h3 class="text-2xl sm:text-4xl font-black text-gray-900 mb-4">قدراتنا وتجهيزاتنا الميدانية</h3>
+        <p class="text-gray-600 font-medium">نوفر أحدث المعدات الفنية المعتمدة لإخراج الفعاليات بأعلى المعايير العالمية.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition">
+          <div class="text-3xl mb-4">🎪</div>
+          <h4 class="font-extrabold text-lg text-gray-900 mb-2">المسارح والمدرجات</h4>
+          <p class="text-sm text-gray-600 leading-relaxed">تصميم وبناء الهياكل الهندسية، المسارح المعلقة، وتأمين مدرجات الجماهير.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition">
+          <div class="text-3xl mb-4">🔊</div>
+          <h4 class="font-extrabold text-lg text-gray-900 mb-2">أنظمة الصوت الفاخرة</h4>
+          <p class="text-sm text-gray-600 leading-relaxed">أحدث أنظمة Line Array لتغطية المساحات المفتوحة مع أجهزة ضبط هندسي متقدمة.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition">
+          <div class="text-3xl mb-4">💡</div>
+          <h4 class="font-extrabold text-lg text-gray-900 mb-2">الإضاءة والشاشات</h4>
+          <p class="text-sm text-gray-600 leading-relaxed">شاشات LED عملاقة فائقة الوضوح، وعروض الليزر وأنظمة الإضاءة المسرحية الذكية.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition">
+          <div class="text-3xl mb-4">🎆</div>
+          <h4 class="font-extrabold text-lg text-gray-900 mb-2">المؤثرات والألعاب النارية</h4>
+          <p class="text-sm text-gray-600 leading-relaxed">عروض المؤثرات الخاصة المعتمدة لتتويج الفعاليات الوطنية والمهرجانات الجماهيرية.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- سابقة الأعمال (Projects Gallery) -->
+  <section id="projects" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h3 class="text-2xl sm:text-4xl font-black text-gray-900 mb-3">سابقة الأعمال والمشاريع</h3>
+          <p class="text-gray-600 font-medium">جانب من الاحتفالات والفعاليات التي تشرفنا بتجهيزها في مختلف مناطق المملكة.</p>
+        </div>
+      </div>
+      <!-- شبكة عرض المشاريع من قاعدة البيانات -->
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="p-8 text-center col-span-full text-gray-400 font-bold">جاري تحميل الفعاليات...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- نموذج طلب عرض سعر (Quote Form) -->
+  <section id="quote" class="py-20 bg-white border-t border-gray-100">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h3 class="text-2xl sm:text-4xl font-black text-gray-900 mb-3">طلب عرض سعر لفعاليتك</h3>
+        <p class="text-gray-600 font-medium">أدخل بيانات فعاليتك وسيقوم فريق العمل بالتواصل معك وتجهيز خطة العمل.</p>
+      </div>
+      <form id="quote-form" class="space-y-6 bg-gray-50 p-8 rounded-3xl border border-gray-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">الاسم الكريم / الجهة *</label>
+            <input type="text" id="client_name" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">رقم الجوال *</label>
+            <input type="tel" id="client_phone" required placeholder="05XXXXXXXX" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">المنطقة أو المدينة *</label>
+            <input type="text" id="event_region" required placeholder="مثال: الرياض، حائل، جدة..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">موعد الفعالية التقريبي</label>
+            <input type="date" id="event_date" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-2">التجهيزات والملاحظات المطلوبة</label>
+          <textarea id="event_notes" rows="4" placeholder="المسارح، الشاشات، نوع الحفل..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none"></textarea>
+        </div>
+        <button type="submit" id="submit-btn" class="w-full py-4 rounded-xl text-white font-black text-lg bg-primary hover:opacity-90 shadow-md transition">
+          إرسال الطلب
+        </button>
+        <p id="form-msg" class="hidden text-center font-bold text-sm"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer class="py-12 bg-gray-950 text-gray-400 text-sm">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="font-bold text-gray-300 mb-2">مؤسسة سهم أجا لتنظيم وتجهيز الفعاليات والمهرجانات</p>
+      <p>© جميع الحقوق محفوظة</p>
+    </div>
+  </footer>
+
+  <!-- سكربت جلب البيانات والربط الفوري -->
+  <script>
+    // ضع بيانات الربط الخاصة بمشروعك هنا
+    const SUPABASE_URL = 'https://eustoacawgsqgrzprmet.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1c3RvYWNhd2dzcWdyenBybWV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTAzNzMsImV4cCI6MjEwNTcyNjM3M30.E9K5kaJHKPx1NQNgWLuWHepopd-l6-A0KtzyVNfxSEE';
+
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // تحميل وضبط إعدادات الهوية والألوان
+    async function loadSettings() {
+      try {
+        const { data, error } = await client.from('site_settings').select('*').eq('id', 1).single();
+        if (data) {
+          if (data.primary_color) document.documentElement.style.setProperty('--primary-color', data.primary_color);
+          if (data.secondary_color) document.documentElement.style.setProperty('--secondary-color', data.secondary_color);
+          if (data.accent_color) document.documentElement.style.setProperty('--accent-color', data.accent_color);
+          if (data.hero_title) document.getElementById('hero-title').innerText = data.hero_title;
+          if (data.hero_subtitle) document.getElementById('hero-subtitle').innerText = data.hero_subtitle;
+          if (data.whatsapp_number) document.getElementById('whatsapp-btn').href = `https://wa.me/${data.whatsapp_number}`;
+          if (data.logo_url) {
+            document.getElementById('logo-container').innerHTML = `<img src="${data.logo_url}" class="h-full w-full object-cover rounded-xl" alt="لوجو">`;
+          }
+        }
+      } catch (e) { console.error('خطأ الإعدادات:', e); }
+    }
+
+    // جلب سوابق الأعمال المنشورة
+    async function loadProjects() {
+      const grid = document.getElementById('projects-grid');
+      try {
+        const { data: projects, error } = await client.from('projects').select('*').eq('is_published', true).order('created_at', { ascending: false });
+        if (projects && projects.length > 0) {
+          grid.innerHTML = projects.map(p => `
+            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition">
+              <img src="${p.cover_image || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600'}" class="w-full h-52 object-cover" alt="${p.title}">
+              <div class="p-6">
+                <span class="inline-block px-3 py-1 bg-green-50 text-green-700 text-xs font-black rounded-lg mb-3">${p.region}</span>
+                <h4 class="font-extrabold text-lg text-gray-900 mb-2">${p.title}</h4>
+                <p class="text-sm text-gray-600 line-clamp-2">${p.description || ''}</p>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500 font-bold">لا توجد مشاريع مضافة حتى الآن. يمكنك إضافتها من لوحة التحكم!</div>';
+        }
+      } catch (e) {
+        grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500">مرحباً بك! يمكنك البدء بإضافة مشاريعك عبر لوحة التحكم.</div>';
+      }
+    }
+
+    // إرسال طلب عرض السعر لقاعدة البيانات
+    document.getElementById('quote-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const msg = document.getElementById('form-msg');
+      btn.innerText = 'جاري الإرسال...';
+      btn.disabled = true;
+
+      const payload = {
+        client_name: document.getElementById('client_name').value,
+        phone: document.getElementById('client_phone').value,
+        event_region: document.getElementById('event_region').value,
+        event_date: document.getElementById('event_date').value || null,
+        notes: document.getElementById('event_notes').value
+      };
+
+      const { error } = await client.from('quote_requests').insert([payload]);
+      if (!error) {
+        msg.innerText = 'تم استلام طلبكم بنجاح! سيتواصل معكم فريق العمل قريباً.';
+        msg.className = 'text-center font-bold text-sm text-green-600';
+        msg.classList.remove('hidden');
+        document.getElementById('quote-form').reset();
+      } else {
+        msg.innerText = 'حدث خطأ أثناء الإرسال، يُرجى المحاولة لاحقاً.';
+        msg.className = 'text-center font-bold text-sm text-red-600';
+        msg.classList.remove('hidden');
+      }
+      btn.innerText = 'إرسال الطلب';
+      btn.disabled = false;
+    });
+
+    loadSettings();
+    loadProjects();
+  </script>
+</body>
+</html>
