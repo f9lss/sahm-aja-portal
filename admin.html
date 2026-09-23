@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم | مؤسسة سهم أجا</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 antialiased min-h-screen">
+
+  <!-- شاشة تسجيل الدخول (تظهر فقط إذا لم تكن مسجل دخولك) -->
+  <div id="login-section" class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-gray-100">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-green-700 text-white font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-3 shadow">أجا</div>
+        <h2 class="text-2xl font-black text-gray-900">دخول الإدارة</h2>
+        <p class="text-xs text-gray-500 font-bold mt-1">مؤسسة سهم أجا لتجهيز الفعاليات</p>
+      </div>
+      <form id="login-form" class="space-y-5">
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-2">البريد الإلكتروني</label>
+          <input type="email" id="login-email" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-2">كلمة المرور</label>
+          <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
+        </div>
+        <button type="submit" id="login-btn" class="w-full py-3.5 bg-green-700 hover:bg-green-800 text-white font-black rounded-xl shadow transition">
+          تسجيل الدخول
+        </button>
+        <p id="login-err" class="hidden text-center text-xs font-bold text-red-600"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- لوحة التحكم الكاملة (تظهر فور تسجيل الدخول) -->
+  <div id="dashboard-section" class="hidden">
+    <!-- الشريط العلوي -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="font-black text-lg text-gray-900">سهم أجا | لوحة التحكم</span>
+          <a href="index.html" target="_blank" class="text-xs bg-gray-100 text-gray-600 hover:text-green-700 font-bold px-3 py-1.5 rounded-lg border border-gray-200">
+            معاينة الموقع ↗
+          </a>
+        </div>
+        <button onclick="handleLogout()" class="text-sm font-bold text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition">
+          تسجيل الخروج
+        </button>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+      <!-- 1. التحكم في الألوان والهوية -->
+      <section class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-200">
+        <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
+          <span>🎨</span> الهوية وتصميم الموقع
+        </h3>
+        <form id="settings-form" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">اللون الأساسي (Primary)</label>
+              <div class="flex items-center gap-3">
+                <input type="color" id="primary-color" class="h-10 w-16 rounded cursor-pointer border border-gray-200">
+                <span id="primary-hex" class="text-xs font-mono font-bold text-gray-500"></span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">اللون الثانوي (Secondary)</label>
+              <div class="flex items-center gap-3">
+                <input type="color" id="secondary-color" class="h-10 w-16 rounded cursor-pointer border border-gray-200">
+                <span id="secondary-hex" class="text-xs font-mono font-bold text-gray-500"></span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">اللون التمييزي الذهبي (Accent)</label>
+              <div class="flex items-center gap-3">
+                <input type="color" id="accent-color" class="h-10 w-16 rounded cursor-pointer border border-gray-200">
+                <span id="accent-hex" class="text-xs font-mono font-bold text-gray-500"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">العنوان الرئيسي الترحيبي</label>
+              <input type="text" id="hero-title-input" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">رقم الواتساب للتواصل (مع مفتاح الدولة)</label>
+              <input type="text" id="whatsapp-input" placeholder="9665XXXXXXXX" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">النص الترحيبي الفرعي</label>
+            <textarea id="hero-subtitle-input" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">تحديث شعار المؤسسة (صورة اللوجو)</label>
+            <input type="file" id="logo-file" accept="image/*" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+          </div>
+
+          <button type="submit" id="save-settings-btn" class="px-6 py-3 bg-green-700 hover:bg-green-800 text-white font-black text-sm rounded-xl shadow transition">
+            حفظ تعديلات الهوية
+          </button>
+          <span id="settings-msg" class="hidden mr-4 text-xs font-bold text-green-600">تم حفظ الإعدادات بنجاح!</span>
+        </form>
+      </section>
+
+      <!-- 2. إضافة واستعراض الفعاليات والمشاريع -->
+      <section class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-200">
+        <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
+          <span>🎪</span> سابقة الأعمال والمشاريع
+        </h3>
+        
+        <!-- نموذج إضافة فعالية جديدة -->
+        <form id="project-form" class="space-y-4 mb-10 p-6 bg-gray-50 rounded-2xl border border-gray-200">
+          <h4 class="font-extrabold text-sm text-gray-800 mb-2">إضافة مشروع / فعالية جديدة</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">اسم الفعالية *</label>
+              <input type="text" id="p-title" required placeholder="مثال: حفل اليوم الوطني 94" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">المنطقة / المدينة *</label>
+              <input type="text" id="p-region" required placeholder="مثال: الرياض، حائل، جدة..." class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">صورة الغلاف *</label>
+              <input type="file" id="p-image-file" accept="image/*" required class="w-full text-xs text-gray-500 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-white file:border-gray-200 file:font-bold">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">وصف التجهيزات</label>
+            <textarea id="p-desc" rows="2" placeholder="المسارح، شاشات العرض، المؤثرات..." class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300"></textarea>
+          </div>
+          <button type="submit" id="add-project-btn" class="px-5 py-2.5 bg-gray-900 hover:bg-black text-white font-bold text-xs rounded-xl shadow transition">
+            إضافة الفعالية للموقع
+          </button>
+        </form>
+
+        <!-- قائمة المشاريع الحالية -->
+        <div id="projects-list" class="space-y-3">
+          <p class="text-sm text-gray-400 font-bold">جاري تحميل المشاريع...</p>
+        </div>
+      </section>
+
+      <!-- 3. طلبات عروض الأسعار الواردة من الموقع -->
+      <section class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-200">
+        <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
+          <span>📬</span> طلبات عروض الأسعار الواردة
+        </h3>
+        <div id="quotes-list" class="overflow-x-auto">
+          <p class="text-sm text-gray-400 font-bold">جاري تحميل الطلبات...</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://eustoacawgsqgrzprmet.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1c3RvYWNhd2dzcWdyenBybWV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTAzNzMsImV4cCI6MjEwNTcyNjM3M30.E9K5kaJHKPx1NQNgWLuWHepopd-l6-A0KtzyVNfxSEE';
+
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // إدارة الجلسة وتسجيل الدخول
+    async function checkAuth() {
+      const { data: { session } } = await client.auth.getSession();
+      if (session) {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('dashboard-section').classList.remove('hidden');
+        loadAllData();
+      } else {
+        document.getElementById('login-section').classList.remove('hidden');
+        document.getElementById('dashboard-section').classList.add('hidden');
+      }
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('login-btn');
+      const err = document.getElementById('login-err');
+
+      btn.innerText = 'جاري التحقق...';
+      btn.disabled = true;
+
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error) {
+        err.innerText = 'بيانات الدخول غير صحيحة، تأكد من البريد وكلمة المرور.';
+        err.classList.remove('hidden');
+        btn.innerText = 'تسجيل الدخول';
+        btn.disabled = false;
+      } else {
+        checkAuth();
+      }
+    });
+
+    async function handleLogout() {
+      await client.auth.signOut();
+      window.location.reload();
+    }
+
+    // جلب وحفظ البيانات
+    async function loadAllData() {
+      loadSettings();
+      loadProjects();
+      loadQuotes();
+    }
+
+    async function loadSettings() {
+      const { data } = await client.from('site_settings').select('*').eq('id', 1).single();
+      if (data) {
+        document.getElementById('primary-color').value = data.primary_color;
+        document.getElementById('secondary-color').value = data.secondary_color;
+        document.getElementById('accent-color').value = data.accent_color;
+        document.getElementById('primary-hex').innerText = data.primary_color;
+        document.getElementById('secondary-hex').innerText = data.secondary_color;
+        document.getElementById('accent-hex').innerText = data.accent_color;
+        document.getElementById('hero-title-input').value = data.hero_title || '';
+        document.getElementById('hero-subtitle-input').value = data.hero_subtitle || '';
+        document.getElementById('whatsapp-input').value = data.whatsapp_number || '';
+      }
+    }
+
+    // حفظ تعديل الألوان والنصوص
+    document.getElementById('settings-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('save-settings-btn');
+      const msg = document.getElementById('settings-msg');
+      btn.innerText = 'جاري الحفظ...';
+
+      let logoUrl = null;
+      const file = document.getElementById('logo-file').files[0];
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `logo_${Date.now()}.${fileExt}`;
+        const { data: uploadData } = await client.storage.from('media').upload(fileName, file);
+        if (uploadData) {
+          const { data: { publicUrl } } = client.storage.from('media').getPublicUrl(fileName);
+          logoUrl = publicUrl;
+        }
+      }
+
+      const updates = {
+        primary_color: document.getElementById('primary-color').value,
+        secondary_color: document.getElementById('secondary-color').value,
+        accent_color: document.getElementById('accent-color').value,
+        hero_title: document.getElementById('hero-title-input').value,
+        hero_subtitle: document.getElementById('hero-subtitle-input').value,
+        whatsapp_number: document.getElementById('whatsapp-input').value,
+      };
+      if (logoUrl) updates.logo_url = logoUrl;
+
+      await client.from('site_settings').update(updates).eq('id', 1);
+      btn.innerText = 'حفظ تعديلات الهوية';
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 3000);
+    });
+
+    // إدارة المشاريع
+    async function loadProjects() {
+      const { data: projects } = await client.from('projects').select('*').order('created_at', { ascending: false });
+      const container = document.getElementById('projects-list');
+      if (projects && projects.length > 0) {
+        container.innerHTML = projects.map(p => `
+          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <div class="flex items-center gap-4">
+              <img src="${p.cover_image}" class="w-14 h-14 object-cover rounded-lg">
+              <div>
+                <h5 class="font-extrabold text-sm text-gray-900">${p.title}</h5>
+                <p class="text-xs text-gray-500 font-bold">${p.region}</p>
+              </div>
+            </div>
+            <button onclick="deleteProject('${p.id}')" class="text-xs text-red-600 font-bold hover:bg-red-50 p-2 rounded-lg">حذف</button>
+          </div>
+        `).join('');
+      } else {
+        container.innerHTML = '<p class="text-xs text-gray-400">لا توجد مشاريع مضافة حالياً.</p>';
+      }
+    }
+
+    document.getElementById('project-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('add-project-btn');
+      btn.innerText = 'جاري الرفع والإضافة...';
+      btn.disabled = true;
+
+      const file = document.getElementById('p-image-file').files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `proj_${Date.now()}.${fileExt}`;
+      await client.storage.from('media').upload(fileName, file);
+      const { data: { publicUrl } } = client.storage.from('media').getPublicUrl(fileName);
+
+      await client.from('projects').insert([{
+        title: document.getElementById('p-title').value,
+        region: document.getElementById('p-region').value,
+        description: document.getElementById('p-desc').value,
+        cover_image: publicUrl
+      }]);
+
+      document.getElementById('project-form').reset();
+      btn.innerText = 'إضافة الفعالية للموقع';
+      btn.disabled = false;
+      loadProjects();
+    });
+
+    async function deleteProject(id) {
+      if (confirm('هل أنت متأكد من حذف هذه الفعالية؟')) {
+        await client.from('projects').delete().eq('id', id);
+        loadProjects();
+      }
+    }
+
+    // جلب طلبات عروض الأسعار
+    async function loadQuotes() {
+      const { data: quotes } = await client.from('quote_requests').select('*').order('created_at', { ascending: false });
+      const container = document.getElementById('quotes-list');
+      if (quotes && quotes.length > 0) {
+        container.innerHTML = `
+          <table class="w-full text-right text-xs">
+            <thead class="bg-gray-100 text-gray-700 font-bold">
+              <tr>
+                <th class="p-3">العميل / الجهة</th>
+                <th class="p-3">الجوال</th>
+                <th class="p-3">المنطقة</th>
+                <th class="p-3">الملاحظات</th>
+                <th class="p-3">تواصل</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              ${quotes.map(q => `
+                <tr>
+                  <td class="p-3 font-bold">${q.client_name}</td>
+                  <td class="p-3">${q.phone}</td>
+                  <td class="p-3">${q.event_region}</td>
+                  <td class="p-3 text-gray-500">${q.notes || '-'}</td>
+                  <td class="p-3">
+                    <a href="https://wa.me/966${q.phone.replace(/^0+/, '')}" target="_blank" class="text-green-700 font-black hover:underline">واتساب</a>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } else {
+        container.innerHTML = '<p class="text-xs text-gray-400">لا توجد طلبات واردة حتى الآن.</p>';
+      }
+    }
+
+    checkAuth();
+  </script>
+</body>
+</html>
